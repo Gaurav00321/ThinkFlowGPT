@@ -115,6 +115,22 @@ export function MainChatSection() {
   };
 
   const generateBotResponse = (message) => {
+    const lowerMessage = message.toLowerCase().trim();
+
+    // Math Calculation Handling
+    try {
+      if (/^[0-9+\-*/().\s]+$/.test(lowerMessage)) {
+        const result = eval(lowerMessage); // Safe for basic math expressions
+        return { text: `The result is: ${result}`, sender: "bot" };
+      }
+    } catch (error) {
+      return {
+        text: "I couldn't compute that. Please check your input.",
+        sender: "bot",
+      };
+    }
+
+    // Predefined responses
     const responses = {
       hi: "Hello! How can I assist you?",
       hello: "Hey there! Need any help?",
@@ -122,7 +138,6 @@ export function MainChatSection() {
       bye: "Goodbye! Have a great day!",
     };
 
-    const lowerMessage = message.toLowerCase();
     for (const key in responses) {
       if (lowerMessage.includes(key)) {
         return { text: responses[key], sender: "bot" };
