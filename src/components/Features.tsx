@@ -1,58 +1,54 @@
-'use client'
-import Link from "next/link"
-import courseData from "../data/features.json"
-import { BackgroundGradient } from "./ui/background-gradient"
+"use client";
+import Link from "next/link";
+import featureData from "../data/features.json";
+import { Button } from "./ui/moving-border";
 
-interface Course{
-    id: number,
-    title: string,
-    slug: string,
-    description: string,
-    price: number,
-    instructor: string,
-    isFeatured: boolean,
-        
-}
-
-function FeaturedCourses() {
-    const featuredCourses = courseData.courses.filter((course:Course) => course.isFeatured)
-
+function FeaturedFeatures() {
+  const featuredFeatures = featureData.features;
 
   return (
-    <div className="py-12 bg-gray-950">
-        <div>
-            <div className="text-center">
-                <h2 className="text-4xl text-teal-600 font-semibold tracking-wide uppercase">FEATURES</h2>
-                <p className="mt-2 text-2xl leading-8 font-extrabold tracking-tight text-white sm:text-4xl">ThinkFlow AI: Smart, Fast, and Limitless</p>
-            </div>
-        </div>
-        <div className="mt-10 mx-8">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
-                {featuredCourses.map((course:Course)=> (
-                    <div key={course.id} className="flex justify-center">
-                        <BackgroundGradient
-                        className="flex flex-col rounded-[22px] bg-white dark:bg-zinc-900 overflow-hidden h-full max-w-sm">
-                            <div className="p-4 sm:p-6 flex flex-col items-center text-center flex-grow">
-                                <p className="text-lg sm:text-xl text-black mt-4 mb-2 dark:text-neutral-200">{course.title}</p>
-                                <p className="text-sm text-neutral-600 dark:text-neutral-400 flex-grow">{course.description}</p>
-                                <Link href={`/courses/${course.slug}`}>
-                                Learn More
-                                </Link>
-                            </div>
-                        </BackgroundGradient>
-                    </div>
-                ))}
-            </div>
-        </div>
-        <div className="mt-20 text-center">
-            <Link href={"/courses"}
-            className="px-4 py-2 rounded border border-neutral-600 text-neutral-700 bg-white hover:bg-gray-100 transition duration-200"
-            >
-            View All courses
+    <div className="py-16 px-8 bg-gradient-to-b from-black via-gray-900 to-black rounded-3xl w-full">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+        {/* Left Section: Heading & CTA */}
+        <div className="text-white">
+          <h2 className="text-5xl mb-4 font-semibold text-teal-500 uppercase tracking-wide">
+            Features
+          </h2>
+          <h3 className="mt-2 text-4xl font-bold">
+            The power of ThinkFlow AI at your fingertips
+          </h3>
+          <p className="mt-4 text-gray-400">
+            Discover how ThinkFlow AI helps you automate tasks and enhance efficiency.
+          </p>
+          <div className="mt-5">
+            <Link href={"/features"}>
+              <Button>Start for free</Button>
             </Link>
+          </div>
         </div>
+
+        {/* Right Section: 4-Card Grid Layout with Smooth Hover Animation */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          {featuredFeatures.slice(0, 4).map((feature) => (
+            <div
+              key={feature.id}
+              className="p-6 rounded-xl bg-gray-800 text-white shadow-lg transition-all duration-300 ease-in-out 
+                         transform hover:scale-105 hover:shadow-2xl"
+            >
+              <h4 className="text-xl font-semibold">{feature.title}</h4>
+              <p className="text-gray-400 mt-2 text-sm">{feature.description}</p>
+              <Link
+                href={`/features/${feature.slug}`}
+                className="mt-4 inline-block text-blue-400 hover:underline"
+              >
+                Learn More →
+              </Link>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default FeaturedCourses
+export default FeaturedFeatures;
