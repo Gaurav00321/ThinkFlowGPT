@@ -15,7 +15,7 @@ import { Send, User, Bot, LogIn, Share2 } from "lucide-react";
 const GlassButton = ({ label, icon: Icon }) => {
   return (
     <button
-      className="flex items-center gap-2 px-6 py-2 
+      className="flex items-center gap-2 px-6 py-2
       rounded-full backdrop-blur-md bg-white/10 border border-white/20 
       text-white shadow-md transition-all hover:bg-white/20 hover:shadow-lg"
     >
