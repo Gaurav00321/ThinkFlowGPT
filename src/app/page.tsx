@@ -1,7 +1,7 @@
 import HeroSection from "@/components/HeroSection";
 import Features from "@/components/Features";
 import { MovingTestimonies } from "@/components/Testimonials";
-import Footer from "@/components/ui/Footer";
+import Footer from "@/components/Footer";
 
 export default function Home() {
   return (
