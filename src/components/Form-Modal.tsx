@@ -13,7 +13,7 @@ export function FormModal() {
   return (
     <div className="flex items-center justify-center">
       <Modal>
-        <ModalTrigger className="bg-black dark:text-black text-white flex justify-center group/modal-btn">
+        <ModalTrigger className="dark:text-black text-white flex justify-center group/modal-btn">
         <Button className="text-lg">
             Sign In
         </Button>

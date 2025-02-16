@@ -11,7 +11,7 @@ function FeaturedFeatures() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
         {/* Left Section: Heading & CTA */}
         <div className="text-white">
-          <h2 className="text-5xl mb-4 font-semibold text-teal-500 uppercase tracking-wide">
+          <h2 className="text-5xl mb-4 font-semibold text-teal-500 antialiased uppercase tracking-wide">
             Features
           </h2>
           <h3 className="mt-2 text-4xl font-bold">
