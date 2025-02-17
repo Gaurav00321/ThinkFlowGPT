@@ -17,7 +17,7 @@ function HeroSection() {
           fill="teal"
         />
         <div className="p-4 relative z-1 w-full text-center">
-          <h1 className="text-teal-500 mt-20 md:mt-0 antialiased text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-400">
+          <h1 className="text-teal-500 mt-20 md:mt-0 antialiased text-4xl md:text-7xl font-bold bg-clip-text text-transparent bg-gradient-to-b from-neutral-50 to-neutral-500">
             Think AI. ThinkFlow.
           </h1>
           <p className="mt-10 text-2xl font-medium md-text-lg text-neutral-300 max-wd-lg mx-auto">
@@ -27,7 +27,7 @@ function HeroSection() {
             evolves—making every interaction smarter and more efficient.
           </p>
           <div className="mt-20 flex justify-center space-x-5">
-            <Link href={"/Dashboard"}>
+            <Link href={"/Chat-Section"}>
               <Button className="px-6 py-3 text-lg">Explore GPT</Button>
             </Link>
             <FormModal />

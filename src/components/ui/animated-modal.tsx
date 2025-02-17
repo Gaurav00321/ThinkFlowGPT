@@ -7,6 +7,7 @@ import React, {
   useContext,
   useEffect,
   useRef,
+  RefObject,
   useState,
 } from "react";
 
@@ -67,19 +68,18 @@ export const ModalBody = ({
   children: ReactNode;
   className?: string;
 }) => {
-  const { open } = useModal();
+  const { open, setOpen } = useModal();
 
   useEffect(() => {
-    if (open) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "auto";
-    }
+    document.body.style.overflow = open ? "hidden" : "auto";
   }, [open]);
 
-  const modalRef = useRef(null);
-  const { setOpen } = useModal();
-  useOutsideClick(modalRef, () => setOpen(false));
+  const modalRef = useRef<HTMLDivElement | null>(null);
+
+  // Solution 2: Type assertion to bypass the error
+  useOutsideClick(modalRef as React.RefObject<HTMLDivElement>, () =>
+    setOpen(false)
+  );
 
   return (
     <AnimatePresence>
@@ -220,13 +220,12 @@ const CloseIcon = () => {
 // Hook to detect clicks outside of a component.
 // Add it in a separate file, I've added here for simplicity
 export const useOutsideClick = (
-  ref: React.RefObject<HTMLDivElement>,
-  callback: Function
+  ref: RefObject<HTMLDivElement>,
+  callback: (event: MouseEvent | TouchEvent) => void // Explicit function type
 ) => {
   useEffect(() => {
-    const listener = (event: any) => {
-      // DO NOTHING if the element being clicked is the target element or their children
-      if (!ref.current || ref.current.contains(event.target)) {
+    const listener = (event: MouseEvent | TouchEvent) => {
+      if (!ref.current || ref.current.contains(event.target as Node)) {
         return;
       }
       callback(event);

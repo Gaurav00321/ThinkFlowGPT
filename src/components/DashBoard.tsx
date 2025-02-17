@@ -12,15 +12,17 @@ import { motion } from "framer-motion";
 import Image from "next/image";
 import { Send, User, Bot, LogIn, Share2 } from "lucide-react";
 
-const GlassButton = ({ label, icon: Icon }) => {
+// ✅ Fixed missing prop type definition for GlassButton
+interface GlassButtonProps {
+  label: string;
+  icon: React.ElementType;
+}
+
+const GlassButton: React.FC<GlassButtonProps> = ({ label, icon: Icon }) => {
   return (
-    <button
-      className="flex items-center gap-2 px-6 py-2
-      rounded-full backdrop-blur-md bg-white/10 border border-white/20 
-      text-white shadow-md transition-all hover:bg-white/20 hover:shadow-lg"
-    >
+    <button className="inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
       <Icon size={18} />
-      <span className="font-medium">{label}</span>
+      <span className="ml-2 font-medium">{label}</span>
     </button>
   );
 };
@@ -36,10 +38,11 @@ export function SidebarDrawer() {
     { label: "Settings", href: "#", icon: <IconSettings className="icon" /> },
     { label: "Logout", href: "#", icon: <IconArrowLeft className="icon" /> },
   ];
-  const [open, setOpen] = useState(false);
+
+  const [open, setOpen] = useState<boolean>(false);
 
   return (
-    <div className="h-screen flex flex-col md:flex-row bg-gray-100 dark:bg-neutral-800">
+    <div className="h-screen flex flex-col md:flex-row bg-gray-100 dark:bg-[rgba(11,19,34,1)] backdrop-blur-sm rounded-2xl border-gray-700">
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
           <div className="flex flex-col flex-1 overflow-y-auto">
@@ -72,7 +75,7 @@ export function SidebarDrawer() {
   );
 }
 
-export const Logo = () => (
+export const Logo: React.FC = () => (
   <Link href="#" className="flex space-x-2 items-center text-sm py-1">
     <div className="h-5 w-6 bg-black dark:bg-white rounded-lg" />
     <motion.span className="text-lg text-black dark:text-white">
@@ -81,30 +84,39 @@ export const Logo = () => (
   </Link>
 );
 
-export const LogoIcon = () => (
+export const LogoIcon: React.FC = () => (
   <Link href="#" className="flex space-x-2 items-center text-sm py-1">
     <div className="h-5 w-6 bg-black dark:bg-white rounded-lg" />
   </Link>
 );
 
+interface Message {
+  text: string;
+  sender: "user" | "bot";
+}
+
 export function MainChatSection() {
-  const [messages, setMessages] = useState([
+  const [messages, setMessages] = useState<Message[]>([
     { text: "Hello! How can I assist you today?", sender: "bot" },
   ]);
-  const [input, setInput] = useState("");
-  const chatContainerRef = useRef(null);
+  const [input, setInput] = useState<string>("");
+
+  // ✅ Explicitly type useRef
+  const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    chatContainerRef.current?.scrollTo({
-      top: chatContainerRef.current.scrollHeight,
-      behavior: "smooth",
-    });
+    if (chatContainerRef.current) {
+      chatContainerRef.current.scrollTo({
+        top: chatContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
   }, [messages]);
 
   const handleSendMessage = () => {
     if (!input.trim()) return;
 
-    const userMessage = { text: input, sender: "user" };
+    const userMessage: Message = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
 
     setTimeout(() => {
@@ -114,7 +126,7 @@ export function MainChatSection() {
     setInput("");
   };
 
-  const generateBotResponse = (message) => {
+  const generateBotResponse = (message: string): Message => {
     const lowerMessage = message.toLowerCase().trim();
 
     // Math Calculation Handling
@@ -123,15 +135,14 @@ export function MainChatSection() {
         const result = eval(lowerMessage); // Safe for basic math expressions
         return { text: `The result is: ${result}`, sender: "bot" };
       }
-    } catch (error) {
+    } catch {
       return {
         text: "I couldn't compute that. Please check your input.",
         sender: "bot",
       };
     }
 
-    // Predefined responses
-    const responses = {
+    const responses: { [key: string]: string } = {
       hi: "Hello! How can I assist you?",
       hello: "Hey there! Need any help?",
       "how are you": "I'm just a bot, but I'm doing great! How about you?",
@@ -151,11 +162,12 @@ export function MainChatSection() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-neutral-900 text-white">
-      {/* Header */}
-      <div className="flex justify-between items-center px-6 py-4 bg-gray-700 border-b border-gray-700 shadow-md">
+    <div className="flex flex-col h-screen w-full bg-gradient-to-b from-black via-gray-950 to-black rounded-3xl text-white">
+      <div className="flex justify-between items-center px-6 py-4 bg-[rgba(11,19,34,1)] backdrop-blur-sm rounded-2xl border-gray-700 shadow-md">
         <Link href={"/"}>
-          <h1 className="text-xl font-semibold text-gray-300">ThinkFlow</h1>
+          <h1 className="p-2 ml-4 text-2xl font-semibold text-gray-300">
+            ThinkFlow
+          </h1>
         </Link>
         <div className="flex gap-4">
           <GlassButton label="Sign In" icon={LogIn} />
