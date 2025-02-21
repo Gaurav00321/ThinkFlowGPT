@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+
+import * as React from "react";
 import {
   motion,
   useAnimationFrame,
@@ -7,36 +8,40 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
-import { useRef } from "react";
 import { cn } from "@/lib/utils";
 
-export function Button({
+// Define ButtonProps as a type alias with an intersection
+export type ButtonProps<T extends React.ElementType = "button"> = {
+  borderRadius?: string;
+  children: React.ReactNode;
+  as?: T;
+  containerClassName?: string;
+  borderClassName?: string;
+  duration?: number;
+  className?: string;
+} & React.ComponentPropsWithoutRef<T>;
+
+export function Button<T extends React.ElementType = "button">({
   borderRadius = "1.75rem",
   children,
-  as: Component = "button",
+  as,
   containerClassName,
   borderClassName,
   duration,
   className,
   ...otherProps
-}: {
-  borderRadius?: string;
-  children: React.ReactNode;
-  as?: any;
-  containerClassName?: string;
-  borderClassName?: string;
-  duration?: number;
-  className?: string;
-  [key: string]: any;
-}) {
+}: ButtonProps<T>) {
+  // Determine the component type (defaults to "button")
+  const Component = as || "button";
+
   return (
     <Component
       className={cn(
-        "bg-transparent relative text-xl  h-16 w-40 p-[1px] overflow-hidden ",
+        "bg-transparent relative text-xl h-16 w-40 p-[1px] overflow-hidden",
         containerClassName
       )}
       style={{
-        borderRadius: borderRadius,
+        borderRadius,
       }}
       {...otherProps}
     >
@@ -69,37 +74,45 @@ export function Button({
   );
 }
 
-export const MovingBorder = ({
+interface MovingBorderProps extends React.SVGAttributes<SVGSVGElement> {
+  children: React.ReactNode;
+  duration?: number;
+  rx?: string;
+  ry?: string;
+}
+
+export const MovingBorder: React.FC<MovingBorderProps> = ({
   children,
   duration = 2000,
   rx,
   ry,
   ...otherProps
-}: {
-  children: React.ReactNode;
-  duration?: number;
-  rx?: string;
-  ry?: string;
-  [key: string]: any;
 }) => {
-  const pathRef = useRef<any>();
+  // Type the ref as SVGRectElement | null.
+  const pathRef = React.useRef<SVGRectElement | null>(null);
   const progress = useMotionValue<number>(0);
 
   useAnimationFrame((time) => {
-    const length = pathRef.current?.getTotalLength();
+    // Cast our ref as SVGGeometryElement to access geometry methods.
+    const geometry = pathRef.current as unknown as SVGGeometryElement | null;
+    const length = geometry?.getTotalLength();
     if (length) {
       const pxPerMillisecond = length / duration;
       progress.set((time * pxPerMillisecond) % length);
     }
   });
 
-  const x = useTransform(
-    progress,
-    (val) => pathRef.current?.getPointAtLength(val).x
+  const x = useTransform(progress, (val) =>
+    pathRef.current
+      ? (pathRef.current as unknown as SVGGeometryElement).getPointAtLength(val)
+          .x
+      : 0
   );
-  const y = useTransform(
-    progress,
-    (val) => pathRef.current?.getPointAtLength(val).y
+  const y = useTransform(progress, (val) =>
+    pathRef.current
+      ? (pathRef.current as unknown as SVGGeometryElement).getPointAtLength(val)
+          .y
+      : 0
   );
 
   const transform = useMotionTemplate`translateX(${x}px) translateY(${y}px) translateX(-50%) translateY(-50%)`;
