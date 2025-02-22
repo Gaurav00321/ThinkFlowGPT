@@ -5,45 +5,52 @@ import { InfiniteMovingCards } from "./ui/infinite-moving-cards";
 const testimonials = [
   {
     quote:
-      "It was the best of times, it was the worst of times, it was the age of wisdom, it was the age of foolishness, it was the epoch of belief, it was the epoch of incredulity, it was the season of Light, it was the season of Darkness, it was the spring of hope, it was the winter of despair.",
-    name: "Charles Dickens",
-    title: "A Tale of Two Cities",
-    avatar: "https://i.pravatar.cc/150?img=1",
+      "ThinkFlow transformed our workflow—its intuitive design and powerful features boosted our team's productivity by over 40%.",
+    name: "Alex Johnson",
+    title: "Product Manager at InnoTech",
+    avatar: "https://i.pravatar.cc/150?img=11",
   },
   {
     quote:
-      "To be, or not to be, that is the question: Whether 'tis nobler in the mind to suffer The slings and arrows of outrageous fortune, Or to take Arms against a Sea of troubles, And by opposing end them: to die, to sleep.",
-    name: "William Shakespeare",
-    title: "Hamlet",
-    avatar: "https://i.pravatar.cc/150?img=2",
-  },
-  {
-    quote: "All that we see or seem is but a dream within a dream.",
-    name: "Edgar Allan Poe",
-    title: "A Dream Within a Dream",
-    avatar: "https://i.pravatar.cc/150?img=3",
+      "Using ThinkFlow has been a game-changer. The interface is sleek and user-friendly, and the support team is outstanding.",
+    name: "Maria Rodriguez",
+    title: "CEO, Creative Solutions",
+    avatar: "https://i.pravatar.cc/150?img=12",
   },
   {
     quote:
-      "It is a truth universally acknowledged, that a single man in possession of a good fortune, must be in want of a wife.",
-    name: "Jane Austen",
-    title: "Pride and Prejudice",
-    avatar: "https://i.pravatar.cc/150?img=4",
+      "The seamless integration and robust functionality of ThinkFlow simplified our processes and helped us scale effortlessly.",
+    name: "Samuel Lee",
+    title: "CTO, NextGen Software",
+    avatar: "https://i.pravatar.cc/150?img=13",
   },
   {
     quote:
-      "Call me Ishmael. Some years ago—never mind how long precisely—having little or no money in my purse, and nothing particular to interest me on shore, I thought I would sail about a little and see the watery part of the world.",
-    name: "Herman Melville",
-    title: "Moby-Dick",
-    avatar: "https://i.pravatar.cc/150?img=5",
+      "I appreciate the attention to detail in ThinkFlow. It's reliable, efficient, and a true asset for any team looking to optimize their workflow.",
+    name: "Emily Carter",
+    title: "Marketing Director at GrowthHub",
+    avatar: "https://i.pravatar.cc/150?img=14",
+  },
+  {
+    quote:
+      "ThinkFlow's innovative approach and performance optimizations set a new standard in our industry. It’s streamlined our processes and kept us ahead of the curve.",
+    name: "Daniel Kim",
+    title: "Founder, Visionary Ventures",
+    avatar: "https://i.pravatar.cc/150?img=15",
   },
 ];
 
 export function MovingTestimonies() {
   return (
     <div className="h-[40rem] rounded-3xl flex flex-col antialiased bg-gradient-to-b from-black via-gray-900 to-black  w-full items-center justify-center relative overflow-hidden">
-        <h2 className="text-5xl mb-4 font-semibold text-teal-500 uppercase tracking-wide">What People Say About Us</h2>
-        <p className="mt-2 mb-4 text-gray-400 text-center">Discover the voices of those who have experienced our work firsthand. <br /> Their words reflect the quality, dedication, and impact we strive to deliver every day.</p>
+      <h2 className="text-5xl mb-4 font-semibold text-teal-500 uppercase tracking-wide">
+        What People Say About Us
+      </h2>
+      <p className="mt-2 mb-4 text-gray-400 text-center">
+        Discover the voices of those who have experienced our work firsthand.{" "}
+        <br /> Their words reflect the quality, dedication, and impact we strive
+        to deliver every day.
+      </p>
       <InfiniteMovingCards
         items={testimonials}
         direction="right"

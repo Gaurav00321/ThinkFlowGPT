@@ -45,7 +45,7 @@ export function SidebarDrawer() {
     <div className="h-screen flex flex-col md:flex-row bg-gray-100 dark:bg-[rgba(11,19,34,1)] backdrop-blur-sm rounded-2xl border-gray-700">
       <Sidebar open={open} setOpen={setOpen}>
         <SidebarBody className="justify-between gap-10">
-          <div className="flex flex-col flex-1 overflow-y-auto">
+          <div className="flex flex-col flex-1 overflow-y-scroll-hide">
             {open ? <Logo /> : <LogoIcon />}
             <div className="mt-8 flex flex-col gap-2">
               {links.map((link, idx) => (
