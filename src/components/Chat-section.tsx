@@ -20,7 +20,7 @@ interface GlassButtonProps {
 
 const GlassButton: React.FC<GlassButtonProps> = ({ label, icon: Icon }) => {
   return (
-    <button className="inline-flex h-12 animate-shimmer items-center justify-center rounded-md border border-slate-800 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
+    <button className="inline-flex h-9 animate-shimmer items-center justify-center rounded-md border border-slate-900 bg-[linear-gradient(110deg,#000103,45%,#1e2631,55%,#000103)] bg-[length:200%_100%] px-6 font-medium text-slate-400 transition-colors focus:outline-none focus:ring-2 focus:ring-slate-400 focus:ring-offset-2 focus:ring-offset-slate-50">
       <Icon size={18} />
       <span className="ml-2 font-medium">{label}</span>
     </button>
@@ -100,8 +100,6 @@ export function MainChatSection() {
     { text: "Hello! How can I assist you today?", sender: "bot" },
   ]);
   const [input, setInput] = useState<string>("");
-
-  // ✅ Explicitly type useRef
   const chatContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -113,59 +111,44 @@ export function MainChatSection() {
     }
   }, [messages]);
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (!input.trim()) return;
 
     const userMessage: Message = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
-
-    setTimeout(() => {
-      setMessages((prev) => [...prev, generateBotResponse(input)]);
-    }, 600);
-
     setInput("");
-  };
 
-  const generateBotResponse = (message: string): Message => {
-    const lowerMessage = message.toLowerCase().trim();
-
-    // Math Calculation Handling
     try {
-      if (/^[0-9+\-*/().\s]+$/.test(lowerMessage)) {
-        const result = eval(lowerMessage); // Safe for basic math expressions
-        return { text: `The result is: ${result}`, sender: "bot" };
-      }
-    } catch {
-      return {
-        text: "I couldn't compute that. Please check your input.",
-        sender: "bot",
-      };
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      });
+
+      const data = await response.json();
+      const isCodeRequest = /code|function|script|snippet|program|write/i.test(
+        input
+      );
+
+      const botResponse = isCodeRequest
+        ? `<pre><code>${data.reply}</code></pre>`
+        : data.reply;
+
+      setMessages((prev) => [...prev, { text: botResponse, sender: "bot" }]);
+    } catch (error) {
+      console.error("API Error:", error); // ✅ Logs error to console
+      setMessages((prev) => [
+        ...prev,
+        { text: "Error fetching response. Please try again.", sender: "bot" },
+      ]);
     }
-
-    const responses: { [key: string]: string } = {
-      hi: "Hello! How can I assist you?",
-      hello: "Hey there! Need any help?",
-      "how are you": "I'm just a bot, but I'm doing great! How about you?",
-      bye: "Goodbye! Have a great day!",
-    };
-
-    for (const key in responses) {
-      if (lowerMessage.includes(key)) {
-        return { text: responses[key], sender: "bot" };
-      }
-    }
-
-    return {
-      text: "I didn't quite get that. Could you rephrase?",
-      sender: "bot",
-    };
   };
 
   return (
     <div className="flex flex-col h-screen w-full bg-gradient-to-b from-black via-gray-950 to-black rounded-3xl text-white">
-      <div className="flex justify-between items-center px-6 py-4 bg-[rgba(11,19,34,1)] backdrop-blur-sm rounded-2xl border-gray-700 shadow-md">
+      <div className="flex justify-between items-center px-6 py-2 bg-[rgba(11,19,34,1)] backdrop-blur-sm rounded-2xl border-gray-700 shadow-md">
         <Link href={"/"}>
-          <h1 className="p-2 ml-4 text-2xl font-semibold text-gray-300">
+          <h1 className="p-2 ml-4 text-xl font-semibold text-gray-300">
             ThinkFlowGPT
           </h1>
         </Link>
@@ -183,26 +166,48 @@ export function MainChatSection() {
         {messages.map((msg, idx) => (
           <div
             key={idx}
-            className={`flex w-full max-w-2xl ${
-              msg.sender === "user" ? "justify-end" : "justify-start"
+            className={`w-full max-w-2xl flex flex-col ${
+              msg.sender === "user" ? "items-end" : "items-start"
             }`}
           >
-            <div
-              className={`relative flex items-center gap-2 p-3 max-w-xs md:max-w-md lg:max-w-lg rounded-xl shadow-sm transition-all 
-                ${
-                  msg.sender === "user"
-                    ? "bg-gradient-to-br from-blue-600 to-indigo-600 text-white ml-auto"
-                    : "bg-gray-800 text-gray-200 mr-auto"
-                }
-              `}
-              style={{ margin: "0 20px" }} // Adds space on both sides
-            >
-              {msg.sender === "bot" && (
-                <Bot size={18} className="text-gray-400" />
+            {/* Sender Icon (Above the Bubble) */}
+            <div className="flex items-center gap-2 mb-1">
+              {msg.sender === "bot" ? (
+                <Bot size={20} className="text-gray-400" />
+              ) : (
+                <User size={20} className="text-gray-400" />
               )}
-              <p>{msg.text}</p>
-              {msg.sender === "user" && (
-                <User size={18} className="text-gray-400" />
+              <span className="text-sm text-gray-500">
+                {msg.sender === "bot" ? "Bot" : "You"}
+              </span>
+            </div>
+
+            {/* Message Bubble */}
+            <div
+              className={`relative p-3 min-w-[50px] max-w-2xl md:max-w-md lg:max-w-3xl rounded-xl shadow-sm transition-all 
+        ${
+          msg.sender === "user"
+            ? "bg-blue-600 text-white"
+            : "bg-gray-800 text-gray-200"
+        }
+      `}
+            >
+              {msg.text.startsWith("<pre><code>") ? (
+                <div
+                  className="bg-gray-900 text-white font-mono p-2 rounded-md overflow-x-auto w-2xl"
+                  style={{
+                    maxHeight: "400px",
+                    overflowY: "auto",
+                    scrollbarWidth: "none", // Firefox
+                    msOverflowStyle: "none", // Internet Explorer/Edge
+                  }}
+                >
+                  <pre className="whitespace-pre-wrap">
+                    <code dangerouslySetInnerHTML={{ __html: msg.text }} />
+                  </pre>
+                </div>
+              ) : (
+                <p>{msg.text}</p>
               )}
             </div>
           </div>
@@ -210,7 +215,7 @@ export function MainChatSection() {
       </div>
 
       {/* Chat Input (Centered) */}
-      <div className="relative bottom-6 left-1/2 transform -translate-x-1/2 w-full max-w-lg px-4">
+      <div className="relative bottom-5 left-1/2 transform -translate-x-1/2 w-full max-w-lg px-4">
         <div className="flex bg-gray-800 rounded-full px-4 py-2 shadow-md">
           <input
             className="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none"
