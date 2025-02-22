@@ -15,10 +15,10 @@ function FeaturedFeatures() {
             Features
           </h2>
           <h3 className="mt-2 text-4xl font-bold">
-            The power of ThinkFlow AI at your fingertips
+            The power of ThinkFlowGpt at your fingertips
           </h3>
           <p className="mt-4 text-gray-400">
-            Discover how ThinkFlow AI helps you automate tasks and enhance efficiency.
+            Discover how ThinkFlowGpt helps you automate tasks and enhance efficiency.
           </p>
           <div className="mt-5">
             <Link href={"/features"}>

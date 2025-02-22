@@ -23,7 +23,7 @@ function HeroSection() {
           <p className="mt-10 text-2xl font-medium md-text-lg text-neutral-300 max-wd-lg mx-auto">
             Your AI-powered assistant for seamless conversations, intelligent
             automation, and enhanced productivity. <br /> From answering complex
-            queries to streamlining tasks, ThinkFlow adapts, learns, and
+            queries to streamlining tasks, ThinkFlowGpt adapts, learns, and
             evolves—making every interaction smarter and more efficient.
           </p>
           <div className="mt-20 flex justify-center space-x-5">

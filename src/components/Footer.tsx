@@ -3,7 +3,7 @@ const Footer = () => {
     <footer className="bg-gradient-to-b from-black via-gray-900 to-black w-full mt-6 p-6 text-center text-gray-400">
       <div className="flex flex-col items-center space-y-2">
         <p className="text-sm">
-          © {new Date().getFullYear()} ThinkFlow. All rights reserved.
+          © {new Date().getFullYear()} ThinkFlowGpt. All rights reserved.
         </p>
         <p className="text-sm">
           Developed by{" "}

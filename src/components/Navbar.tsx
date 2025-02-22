@@ -29,7 +29,7 @@ function Navbar({ className }: { className?: string }) {
 
         <MenuItem setActive={setActive} active={active} item="About">
           <div className="flex flex-col space-y-4 text-sm">
-            <HoveredLink href={"#"}>ThinkFlow is AI Model...</HoveredLink>
+            <HoveredLink href={"#"}>ThinkFlowGpt is AI Model...</HoveredLink>
           </div>
         </MenuItem>
 

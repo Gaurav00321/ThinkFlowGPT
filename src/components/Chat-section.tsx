@@ -79,7 +79,7 @@ export const Logo: React.FC = () => (
   <Link href="#" className="flex space-x-2 items-center text-sm py-1">
     <div className="h-5 w-6 bg-black dark:bg-white rounded-lg" />
     <motion.span className="text-lg text-black dark:text-white">
-      ThinkFlow
+      ThinkFlowGPT
     </motion.span>
   </Link>
 );
@@ -166,7 +166,7 @@ export function MainChatSection() {
       <div className="flex justify-between items-center px-6 py-4 bg-[rgba(11,19,34,1)] backdrop-blur-sm rounded-2xl border-gray-700 shadow-md">
         <Link href={"/"}>
           <h1 className="p-2 ml-4 text-2xl font-semibold text-gray-300">
-            ThinkFlow
+            ThinkFlowGPT
           </h1>
         </Link>
         <div className="flex gap-4">
@@ -215,7 +215,7 @@ export function MainChatSection() {
           <input
             className="flex-1 bg-transparent text-white placeholder-gray-400 focus:outline-none"
             type="text"
-            placeholder="Message ThinkFlow..."
+            placeholder="Message ThinkFlowGPT..."
             value={input}
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
