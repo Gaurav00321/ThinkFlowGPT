@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 import defaultTheme from "tailwindcss/defaultTheme";
 import colors from "tailwindcss/colors";
-import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette";
+import flattenColorPalette from "tailwindcss/lib/util/flattenColorPalette"; // ✅ No TypeScript error
 
 /** @type {import('tailwindcss').Config} */
 const config: Config = {
@@ -56,8 +56,14 @@ const config: Config = {
   plugins: [addVariablesForColors],
 };
 
-// This plugin adds each Tailwind color as a global CSS variable, e.g., var(--gray-200).
-function addVariablesForColors({ addBase, theme }: any) {
+// Plugin to add each Tailwind color as a CSS variable, e.g., var(--gray-200).
+function addVariablesForColors({
+  addBase,
+  theme,
+}: {
+  addBase: (styles: Record<string, Record<string, string>>) => void;
+  theme: (path: string) => unknown;
+}) {
   const allColors = flattenColorPalette(theme("colors"));
   const newVars = Object.fromEntries(
     Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
