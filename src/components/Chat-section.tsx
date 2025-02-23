@@ -119,11 +119,14 @@ export function MainChatSection() {
     setInput("");
 
     try {
-      const response = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ message: input }),
-      });
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/chat`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: input }), // ✅ Use 'input' instead of 'a'
+        }
+      );
 
       const data = await response.json();
       const isCodeRequest = /code|function|script|snippet|program|write/i.test(
