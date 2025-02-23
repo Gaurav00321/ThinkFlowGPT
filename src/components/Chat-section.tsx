@@ -192,7 +192,9 @@ export function MainChatSection() {
         }
       `}
             >
-              {msg.text.startsWith("<pre><code>") ? (
+              {msg.text &&
+              typeof msg.text === "string" &&
+              msg.text.startsWith("<pre><code>") ? (
                 <div
                   className="bg-gray-900 text-white font-mono p-2 rounded-md overflow-x-auto w-2xl"
                   style={{
@@ -207,7 +209,7 @@ export function MainChatSection() {
                   </pre>
                 </div>
               ) : (
-                <p>{msg.text}</p>
+                <p>{msg.text || "No message available"}</p> // Fallback for undefined msg.text
               )}
             </div>
           </div>
