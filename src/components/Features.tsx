@@ -21,7 +21,7 @@ function FeaturedFeatures() {
             Discover how ThinkFlowGpt helps you automate tasks and enhance efficiency.
           </p>
           <div className="mt-5">
-            <Link href={"/features"}>
+            <Link href={"/Features"}>
               <Button>Start for free</Button>
             </Link>
           </div>
